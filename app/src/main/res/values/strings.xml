@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TiketSaya</string>
+    <string name="slogan">Wisata Jadi Lebih Asik</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="new_account">NEW ACCOUNT</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+</resources>
