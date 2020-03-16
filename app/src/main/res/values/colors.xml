@@ -9,4 +9,5 @@
     <color name="grayPrimary">#8D8D8D</color>
 
     <color name="blackPrimary">#21272C</color>
+    <color name="bgPrimary">#EDF1F8</color>
 </resources>
