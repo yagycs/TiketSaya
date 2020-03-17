@@ -116,7 +116,7 @@
                 android:layout_height="50dp"
                 android:background="@drawable/bg_input_edit"
                 android:fontFamily="@font/mmedium"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:lines="1"
                 android:paddingLeft="12dp"
                 android:textColor="@color/blackPrimary" />
@@ -148,6 +148,19 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="95dp"
+        android:layout_marginEnd="152dp"
+        android:background="@drawable/bg_btn_plus_blue"
+        android:fontFamily="@font/mmedium"
+        android:text="+"
+        android:textColor="#FFF"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/btn_continue"
