@@ -168,6 +168,7 @@
     </com.github.florent37.shapeofview.shapes.CircleView>
 
     <Button
+        android:id="@+id/btn_add_photo"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginTop="95dp"
