@@ -76,37 +76,36 @@
             </com.github.florent37.shapeofview.shapes.CircleView>
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/nama_lengkap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="28dp"
                 android:fontFamily="@font/mmedium"
-                android:text="Yagy C. Sumule"
                 android:textColor="#FFF"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/view2"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <TextView
+                android:id="@+id/bio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/mlight"
-                android:text="Traveller"
                 android:textColor="#FFF"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/view2"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/nama_lengkap" />
 
             <TextView
+                android:id="@+id/user_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/mmedium"
-                android:text="$ 280"
                 android:textColor="@color/greenPrimary"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"

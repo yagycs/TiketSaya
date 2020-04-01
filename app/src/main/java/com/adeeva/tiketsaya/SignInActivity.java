@@ -52,6 +52,10 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // ubah state menjadi loading
+                btn_sign_in.setEnabled(false);
+                btn_sign_in.setText("Loading ...");
+
                 final String username = xusername.getText().toString();
                 final String password = xpassword.getText().toString();
 
@@ -85,10 +89,14 @@ public class SignInActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Login Success.", Toast.LENGTH_SHORT).show();
 
                             } else {
+                                btn_sign_in.setEnabled(true);
+                                btn_sign_in.setText(getText(R.string.sign_in));
                                 Toast.makeText(getApplicationContext(), "Username atau password tidak terdaftar.", Toast.LENGTH_SHORT).show();
                             }
 
                         } else {
+                            btn_sign_in.setEnabled(true);
+                            btn_sign_in.setText(getText(R.string.sign_in));
                             Toast.makeText(getApplicationContext(), "Username atau password tidak terdaftar.", Toast.LENGTH_SHORT).show();
                         }
                     }
