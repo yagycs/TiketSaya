@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -61,19 +63,14 @@ public class HomeActivity extends AppCompatActivity {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //String imgUri = "https://firebasestorage.googleapis.com/v0/b/tiketsaya-76d32.appspot.com/o/Photousers%2Famin%2F1585734747928.jpg?alt=media&token=9df079b7-d6a3-493c-a357-61af58aa394f";
 
                 nama_lengkap.setText(dataSnapshot.child("nama_lengkap").getValue().toString());
                 bio.setText(dataSnapshot.child("bio").getValue().toString());
                 user_balance.setText("US$ " + dataSnapshot.child("user_balance").getValue().toString());
-                Picasso.with(HomeActivity.this)
-                        .load(Objects.requireNonNull(dataSnapshot.child("url_photo_profile")
-                                .getValue()).toString()).centerCrop().fit()
-                        .into(photo_home_user);
 
-                //Picasso.with(HomeActivity.this)
-                //        .load(imgUri).centerCrop().fit()
-                //        .into(photo_home_user);
+                Picasso.with(HomeActivity.this)
+                        .load(dataSnapshot.child("url_photo_profile").getValue().toString()).centerCrop().fit()
+                        .into(photo_home_user);
             }
 
             @Override

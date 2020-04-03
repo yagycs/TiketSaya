@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -88,7 +89,7 @@ public class RegisterTwoActivity extends AppCompatActivity {
 
                 // validasi untuk file (apakah ada?)
                 if (photo_location != null){
-                    StorageReference storageReference1 =
+                    final StorageReference storageReference1 =
                             storage.child(System.currentTimeMillis() + "." +
                                     getFileExtension(photo_location));
 
@@ -96,10 +97,26 @@ public class RegisterTwoActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            String uri_photo = taskSnapshot.getStorage().getDownloadUrl().toString();
-                            reference.getRef().child("url_photo_profile").setValue(uri_photo);
-                            reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
-                            reference.getRef().child("bio").setValue(bio.getText().toString());
+
+                            storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String url = uri.toString();
+
+                                    reference.getRef().child("url_photo_profile").setValue(url);
+                                    reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
+                                    reference.getRef().child("bio").setValue(bio.getText().toString());
+
+                                    Log.d("url", url);
+
+                                }
+                            });
+
+                            //final String uri_photo = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+
+                            //reference.getRef().child("url_photo_profile").setValue(uri_photo);
+                            //reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
+                            //reference.getRef().child("bio").setValue(bio.getText().toString());
                         }
                     }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
