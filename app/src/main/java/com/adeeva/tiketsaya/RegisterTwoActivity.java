@@ -1,9 +1,5 @@
 package com.adeeva.tiketsaya;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -88,37 +88,37 @@ public class RegisterTwoActivity extends AppCompatActivity {
                 storage = FirebaseStorage.getInstance().getReference().child("Photousers").child(username_key_new);
 
                 // validasi untuk file (apakah ada?)
-                if (photo_location != null){
+                if (photo_location != null) {
                     final StorageReference storageReference1 =
                             storage.child(System.currentTimeMillis() + "." +
                                     getFileExtension(photo_location));
 
                     storageReference1.putFile(photo_location)
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void onSuccess(Uri uri) {
-                                    String url = uri.toString();
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                    reference.getRef().child("url_photo_profile").setValue(url);
-                                    reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
-                                    reference.getRef().child("bio").setValue(bio.getText().toString());
+                                    storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            String url = uri.toString();
 
-                                    Log.d("url", url);
+                                            reference.getRef().child("url_photo_profile").setValue(url);
+                                            reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
+                                            reference.getRef().child("bio").setValue(bio.getText().toString());
 
+                                            Log.d("url", url);
+
+                                        }
+                                    });
+
+                                    //final String uri_photo = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+
+                                    //reference.getRef().child("url_photo_profile").setValue(uri_photo);
+                                    //reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
+                                    //reference.getRef().child("bio").setValue(bio.getText().toString());
                                 }
-                            });
-
-                            //final String uri_photo = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-
-                            //reference.getRef().child("url_photo_profile").setValue(uri_photo);
-                            //reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
-                            //reference.getRef().child("bio").setValue(bio.getText().toString());
-                        }
-                    }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             // pindah activity
@@ -131,13 +131,13 @@ public class RegisterTwoActivity extends AppCompatActivity {
         });
     }
 
-    String getFileExtension(Uri uri){
+    String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    public void findPhoto(){
+    public void findPhoto() {
         Intent pic = new Intent();
         pic.setType("image/*");
         pic.setAction(Intent.ACTION_GET_CONTENT);
@@ -148,13 +148,13 @@ public class RegisterTwoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == photo_max && resultCode == RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == photo_max && resultCode == RESULT_OK && data != null && data.getData() != null) {
             photo_location = data.getData();
             Picasso.with(this).load(photo_location).centerCrop().fit().into(pic_photo_register_user);
         }
     }
 
-    public void getUsernameLocal(){
+    public void getUsernameLocal() {
         SharedPreferences sharedPreferences = getSharedPreferences(USERNAME_KEY, MODE_PRIVATE);
         username_key_new = sharedPreferences.getString(username_key, "");
     }

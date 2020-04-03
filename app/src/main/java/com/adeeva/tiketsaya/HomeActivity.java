@@ -50,6 +50,12 @@ public class HomeActivity extends AppCompatActivity {
         getUsernameLocal();
 
         btn_ticket_pisa = findViewById(R.id.btn_ticket_pisa);
+        btn_ticket_candi = findViewById(R.id.btn_ticket_candi);
+        btn_ticket_monas = findViewById(R.id.btn_ticket_monas);
+        btn_ticket_pagoda = findViewById(R.id.btn_ticket_pagoda);
+        btn_ticket_sphinx = findViewById(R.id.btn_ticket_sphinx);
+        btn_ticket_torri = findViewById(R.id.btn_ticket_torri);
+
         btn_to_profile = findViewById(R.id.btn_to_profile);
 
         photo_home_user = findViewById(R.id.photo_home_user);
@@ -91,7 +97,54 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent gotopisaticket = new Intent(HomeActivity.this, TicketDetailActivity.class);
+                // meletakkan data kepada intent
+                gotopisaticket.putExtra("jenis_tiket", "Pisa");
                 startActivity(gotopisaticket);
+            }
+        });
+
+        btn_ticket_torri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gototorriticket = new Intent(HomeActivity.this, TicketDetailActivity.class);
+                gototorriticket.putExtra("jenis_tiket", "Torri");
+                startActivity(gototorriticket);
+            }
+        });
+
+        btn_ticket_pagoda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gotopagodaticket = new Intent(HomeActivity.this, TicketDetailActivity.class);
+                gotopagodaticket.putExtra("jenis_tiket", "Pagoda");
+                startActivity(gotopagodaticket);
+            }
+        });
+
+        btn_ticket_candi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gotocanditicket = new Intent(HomeActivity.this, TicketDetailActivity.class);
+                gotocanditicket.putExtra("jenis_tiket", "Candi");
+                startActivity(gotocanditicket);
+            }
+        });
+
+        btn_ticket_sphinx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gotosphinxticket = new Intent(HomeActivity.this, TicketDetailActivity.class);
+                gotosphinxticket.putExtra("jenis_tiket", "Sphinx");
+                startActivity(gotosphinxticket);
+            }
+        });
+
+        btn_ticket_monas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gotomonasticket = new Intent(HomeActivity.this, TicketDetailActivity.class);
+                gotomonasticket.putExtra("jenis_tiket", "Monas");
+                startActivity(gotomonasticket);
             }
         });
 
