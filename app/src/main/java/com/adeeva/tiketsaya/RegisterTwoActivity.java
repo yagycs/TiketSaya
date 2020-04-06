@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,51 +83,75 @@ public class RegisterTwoActivity extends AppCompatActivity {
                 btn_continue.setEnabled(false);
                 btn_continue.setText("Loading ...");
 
-                // menyimpan kepada firebase
-                reference = FirebaseDatabase.getInstance().getReference()
-                        .child("Users").child(username_key_new);
-                storage = FirebaseStorage.getInstance().getReference().child("Photousers").child(username_key_new);
+                if (pic_photo_register_user.getDrawable() == null) {
+                    btn_continue.setEnabled(true);
+                    btn_continue.setText(R.string.continue_label);
+                    Toast.makeText(getApplicationContext(), "Foto kosong!", Toast.LENGTH_SHORT).show();
 
-                // validasi untuk file (apakah ada?)
-                if (photo_location != null) {
-                    final StorageReference storageReference1 =
-                            storage.child(System.currentTimeMillis() + "." +
-                                    getFileExtension(photo_location));
+                } else {
 
-                    storageReference1.putFile(photo_location)
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    if (nama_lengkap.getText().toString().isEmpty()) {
+                        btn_continue.setEnabled(true);
+                        btn_continue.setText(R.string.continue_label);
+                        Toast.makeText(getApplicationContext(), "Nama kosong!", Toast.LENGTH_SHORT).show();
 
-                                    storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    } else if (bio.getText().toString().isEmpty()) {
+                        btn_continue.setEnabled(true);
+                        btn_continue.setText(R.string.continue_label);
+                        Toast.makeText(getApplicationContext(), "Your passion kosong!", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        // menyimpan kepada firebase
+                        reference = FirebaseDatabase.getInstance().getReference()
+                                .child("Users").child(username_key_new);
+                        storage = FirebaseStorage.getInstance().getReference().child("Photousers").child(username_key_new);
+
+                        // validasi untuk file (apakah ada?)
+                        if (photo_location != null) {
+                            final StorageReference storageReference1 =
+                                    storage.child(System.currentTimeMillis() + "." +
+                                            getFileExtension(photo_location));
+
+                            storageReference1.putFile(photo_location)
+                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
-                                        public void onSuccess(Uri uri) {
-                                            String url = uri.toString();
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                            reference.getRef().child("url_photo_profile").setValue(url);
-                                            reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
-                                            reference.getRef().child("bio").setValue(bio.getText().toString());
+                                            storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    String url = uri.toString();
 
-                                            Log.d("url", url);
+                                                    reference.getRef().child("url_photo_profile").setValue(url);
+                                                    reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
+                                                    reference.getRef().child("bio").setValue(bio.getText().toString());
 
+                                                    Log.d("url", url);
+
+                                                }
+                                            });
+
+                                            //final String uri_photo = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+
+                                            //reference.getRef().child("url_photo_profile").setValue(uri_photo);
+                                            //reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
+                                            //reference.getRef().child("bio").setValue(bio.getText().toString());
                                         }
-                                    });
-
-                                    //final String uri_photo = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-
-                                    //reference.getRef().child("url_photo_profile").setValue(uri_photo);
-                                    //reference.getRef().child("nama_lengkap").setValue(nama_lengkap.getText().toString());
-                                    //reference.getRef().child("bio").setValue(bio.getText().toString());
+                                    }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                    // pindah activity
+                                    Intent gotosuccess = new Intent(RegisterTwoActivity.this, SuccessRegisterActivity.class);
+                                    startActivity(gotosuccess);
                                 }
-                            }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            // pindah activity
-                            Intent gotosuccess = new Intent(RegisterTwoActivity.this, SuccessRegisterActivity.class);
-                            startActivity(gotosuccess);
+                            });
                         }
-                    });
+
+                    }
+
                 }
+
+
             }
         });
     }

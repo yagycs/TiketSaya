@@ -1,8 +1,5 @@
 package com.adeeva.tiketsaya;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,32 +56,55 @@ public class RegisterOneActivity extends AppCompatActivity {
                 btn_continue.setEnabled(false);
                 btn_continue.setText("Loading ...");
 
-                // menyimpan data kepada local storage
-                SharedPreferences sharedPreferences = getSharedPreferences(USERNAME_KEY, MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(username_key, username.getText().toString());
-                editor.apply();
+                if (username.getText().toString().isEmpty()) {
+                    btn_continue.setEnabled(true);
+                    btn_continue.setText(R.string.continue_label);
+                    Toast.makeText(getApplicationContext(), "Username kosong!", Toast.LENGTH_SHORT).show();
 
-               //simpan kepada database
-                reference = FirebaseDatabase.getInstance().getReference()
-                        .child("Users").child(username.getText().toString());
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        dataSnapshot.getRef().child("username").setValue(username.getText().toString());
-                        dataSnapshot.getRef().child("password").setValue(password.getText().toString());
-                        dataSnapshot.getRef().child("email_address").setValue(email_address.getText().toString());
-                        dataSnapshot.getRef().child("user_balance").setValue(800);
+                } else {
+
+                    if (password.getText().toString().isEmpty()) {
+                        btn_continue.setEnabled(true);
+                        btn_continue.setText(R.string.continue_label);
+                        Toast.makeText(getApplicationContext(), "Password kosong!", Toast.LENGTH_SHORT).show();
+
+                    } else if (email_address.getText().toString().isEmpty()) {
+                        btn_continue.setEnabled(true);
+                        btn_continue.setText(R.string.continue_label);
+                        Toast.makeText(getApplicationContext(), "Email kosong!", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        // menyimpan data kepada local storage
+                        SharedPreferences sharedPreferences = getSharedPreferences(USERNAME_KEY, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(username_key, username.getText().toString());
+                        editor.apply();
+
+                        //simpan kepada database
+                        reference = FirebaseDatabase.getInstance().getReference()
+                                .child("Users").child(username.getText().toString());
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                dataSnapshot.getRef().child("username").setValue(username.getText().toString());
+                                dataSnapshot.getRef().child("password").setValue(password.getText().toString());
+                                dataSnapshot.getRef().child("email_address").setValue(email_address.getText().toString());
+                                dataSnapshot.getRef().child("user_balance").setValue(800);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        Intent gotonextregister = new Intent(RegisterOneActivity.this, RegisterTwoActivity.class);
+                        startActivity(gotonextregister);
+
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
 
-                    }
-                });
-
-                Intent gotonextregister = new Intent(RegisterOneActivity.this, RegisterTwoActivity.class);
-                startActivity(gotonextregister);
             }
         });
     }

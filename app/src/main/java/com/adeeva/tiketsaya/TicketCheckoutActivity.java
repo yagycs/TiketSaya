@@ -37,8 +37,9 @@ public class TicketCheckoutActivity extends AppCompatActivity {
     Integer valuehargatiket = 0;
     ImageView notice_uang;
     LinearLayout btn_back;
+    Integer sisa_balance = 0;
 
-    DatabaseReference reference, reference2, reference3;
+    DatabaseReference reference, reference2, reference3, reference4;
 
     String USERNAME_KEY = "usernamekey";
     String username_key = "";
@@ -190,6 +191,7 @@ public class TicketCheckoutActivity extends AppCompatActivity {
                         reference3.getRef().child("jumlah_tiket").setValue(valuejumlahtiket);
                         reference3.getRef().child("date_wisata").setValue(date_wisata);
                         reference3.getRef().child("time_wisata").setValue(time_wisata);
+                        reference3.getRef().child("total_harga").setValue(valuetotalharga);
 
                         Intent gotosuccessticket = new Intent(TicketCheckoutActivity.this, SuccessBuyTicketActivity.class);
                         startActivity(gotosuccessticket);
@@ -200,6 +202,23 @@ public class TicketCheckoutActivity extends AppCompatActivity {
 
                     }
                 });
+
+                // update data balance kepada users (yang saat ini login)
+                // mengambil data user dari firebase
+                reference4 = FirebaseDatabase.getInstance().getReference().child("Users").child(username_key_new);
+                reference4.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        sisa_balance = mybalance - valuetotalharga;
+                        reference4.getRef().child("user_balance").setValue(sisa_balance);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
     }

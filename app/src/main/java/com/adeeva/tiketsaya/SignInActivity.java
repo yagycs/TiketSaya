@@ -59,53 +59,70 @@ public class SignInActivity extends AppCompatActivity {
                 final String username = xusername.getText().toString();
                 final String password = xpassword.getText().toString();
 
-                reference = FirebaseDatabase.getInstance().getReference()
-                        .child("Users").child(username);
+                if (username.isEmpty()) {
+                    btn_sign_in.setEnabled(true);
+                    btn_sign_in.setText(getText(R.string.sign_in));
+                    Toast.makeText(getApplicationContext(), "Username kosong!", Toast.LENGTH_SHORT).show();
 
-                //reference = FirebaseDatabase.getInstance().getReference()
-                //        .child("Users").child(password);
+                } else {
+                    if (password.isEmpty()) {
+                        btn_sign_in.setEnabled(true);
+                        btn_sign_in.setText(getText(R.string.sign_in));
+                        Toast.makeText(getApplicationContext(), "Password kosong!", Toast.LENGTH_SHORT).show();
 
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
+                    } else {
+                        reference = FirebaseDatabase.getInstance().getReference()
+                                .child("Users").child(username);
 
-                            // ambil data password dari  firebase
-                            String passwordFromFirebase = dataSnapshot.child("password").getValue().toString();
+                        //reference = FirebaseDatabase.getInstance().getReference()
+                        //        .child("Users").child(password);
 
-                            // validasi password dengan pasword firebase
-                            if (password.equals(passwordFromFirebase)) {
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
 
-                                // simpan username (key) pada local
-                                SharedPreferences sharedPreferences = getSharedPreferences(USERNAME_KEY, MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString(username_key, xusername.getText().toString());
-                                editor.apply();
+                                    // ambil data password dari  firebase
+                                    String passwordFromFirebase = dataSnapshot.child("password").getValue().toString();
 
-                                // berpindah activity
-                                Intent gotohome = new Intent(SignInActivity.this, HomeActivity.class);
-                                startActivity(gotohome);
+                                    // validasi password dengan pasword firebase
+                                    if (password.equals(passwordFromFirebase)) {
 
-                                Toast.makeText(getApplicationContext(), "Login Success.", Toast.LENGTH_SHORT).show();
+                                        // simpan username (key) pada local
+                                        SharedPreferences sharedPreferences = getSharedPreferences(USERNAME_KEY, MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString(username_key, xusername.getText().toString());
+                                        editor.apply();
 
-                            } else {
-                                btn_sign_in.setEnabled(true);
-                                btn_sign_in.setText(getText(R.string.sign_in));
-                                Toast.makeText(getApplicationContext(), "Username atau password tidak terdaftar.", Toast.LENGTH_SHORT).show();
+                                        // berpindah activity
+                                        Intent gotohome = new Intent(SignInActivity.this, HomeActivity.class);
+                                        startActivity(gotohome);
+
+                                        Toast.makeText(getApplicationContext(), "Login Success.", Toast.LENGTH_SHORT).show();
+
+                                    } else {
+                                        btn_sign_in.setEnabled(true);
+                                        btn_sign_in.setText(getText(R.string.sign_in));
+                                        Toast.makeText(getApplicationContext(), "Username atau password tidak terdaftar.", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                } else {
+                                    btn_sign_in.setEnabled(true);
+                                    btn_sign_in.setText(getText(R.string.sign_in));
+                                    Toast.makeText(getApplicationContext(), "Username atau password tidak terdaftar.", Toast.LENGTH_SHORT).show();
+                                }
                             }
 
-                        } else {
-                            btn_sign_in.setEnabled(true);
-                            btn_sign_in.setText(getText(R.string.sign_in));
-                            Toast.makeText(getApplicationContext(), "Username atau password tidak terdaftar.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(getApplicationContext(), "Database Error!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(), "Database Error!", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+
+
             }
         });
     }
