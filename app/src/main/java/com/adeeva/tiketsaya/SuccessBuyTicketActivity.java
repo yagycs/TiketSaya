@@ -43,6 +43,14 @@ public class SuccessBuyTicketActivity extends AppCompatActivity {
         btn_view_ticket.startAnimation(btt);
         btn_my_dashboard.startAnimation(btt);
 
+        btn_view_ticket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gotoprofile = new Intent(SuccessBuyTicketActivity.this, MyProfileActivity.class);
+                startActivity(gotoprofile);
+            }
+        });
+
         btn_my_dashboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

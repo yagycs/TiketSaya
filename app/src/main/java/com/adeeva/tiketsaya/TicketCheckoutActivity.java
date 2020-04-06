@@ -164,14 +164,6 @@ public class TicketCheckoutActivity extends AppCompatActivity {
             }
         });
 
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent backtodetail = new Intent(TicketCheckoutActivity.this, TicketDetailActivity.class);
-                startActivity(backtodetail);
-            }
-        });
-
         btn_buy_ticket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,6 +177,7 @@ public class TicketCheckoutActivity extends AppCompatActivity {
                 reference3.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        reference3.getRef().child("id_ticket").setValue(nama_wisata.getText().toString() + nomor_transaksi);
                         reference3.getRef().child("nama_wisata").setValue(nama_wisata.getText().toString());
                         reference3.getRef().child("lokasi").setValue(lokasi.getText().toString());
                         reference3.getRef().child("ketentuan").setValue(ketentuan.getText().toString());
@@ -219,6 +212,14 @@ public class TicketCheckoutActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent backtodetail = new Intent(TicketCheckoutActivity.this, TicketDetailActivity.class);
+                startActivity(backtodetail);
             }
         });
     }

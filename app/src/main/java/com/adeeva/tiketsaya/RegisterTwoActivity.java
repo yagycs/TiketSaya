@@ -175,7 +175,12 @@ public class RegisterTwoActivity extends AppCompatActivity {
 
         if (requestCode == photo_max && resultCode == RESULT_OK && data != null && data.getData() != null) {
             photo_location = data.getData();
-            Picasso.with(this).load(photo_location).centerCrop().fit().into(pic_photo_register_user);
+            Picasso.with(this)
+                    .load(photo_location)
+                    .centerCrop()
+                    .fit()
+                    .placeholder(R.drawable.ic_loading).error(R.drawable.ic_error)
+                    .into(pic_photo_register_user);
         }
     }
 

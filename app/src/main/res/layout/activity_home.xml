@@ -71,7 +71,7 @@
                     android:id="@+id/photo_home_user"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/adeeva" />
+                    android:src="@drawable/icon_nopic" />
 
             </com.github.florent37.shapeofview.shapes.CircleView>
 

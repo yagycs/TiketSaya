@@ -75,7 +75,10 @@ public class HomeActivity extends AppCompatActivity {
                 user_balance.setText("US$ " + dataSnapshot.child("user_balance").getValue().toString());
 
                 Picasso.with(HomeActivity.this)
-                        .load(dataSnapshot.child("url_photo_profile").getValue().toString()).centerCrop().fit()
+                        .load(dataSnapshot.child("url_photo_profile").getValue().toString())
+                        .centerCrop()
+                        .fit()
+                        .placeholder(R.drawable.ic_loading).error(R.drawable.ic_error)
                         .into(photo_home_user);
             }
 

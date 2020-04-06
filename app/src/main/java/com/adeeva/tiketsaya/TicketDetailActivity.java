@@ -67,7 +67,10 @@ public class TicketDetailActivity extends AppCompatActivity {
                 short_desc_ticket.setText(dataSnapshot.child("short_desc").getValue().toString());
 
                 Picasso.with(TicketDetailActivity.this)
-                        .load(dataSnapshot.child("url_thumbnail").getValue().toString()).centerCrop().fit()
+                        .load(dataSnapshot.child("url_thumbnail").getValue().toString())
+                        .centerCrop()
+                        .fit()
+                        .placeholder(R.drawable.ic_loading).error(R.drawable.ic_error)
                         .into(header_ticket_detail);
             }
 
