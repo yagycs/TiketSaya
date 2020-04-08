@@ -116,6 +116,14 @@ public class TicketCheckoutActivity extends AppCompatActivity {
 
                 valuetotalharga = valuehargatiket * valuejumlahtiket;
                 texttotalharga.setText("US$ " + valuetotalharga + "");
+
+                // coding tambahan
+                if (valuetotalharga > mybalance) {
+                    btn_buy_ticket.animate().translationY(250).alpha(0).setDuration(350).start();
+                    btn_buy_ticket.setEnabled(false);
+                    textmybalance.setTextColor(Color.parseColor("#D1206B"));
+                    notice_uang.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
