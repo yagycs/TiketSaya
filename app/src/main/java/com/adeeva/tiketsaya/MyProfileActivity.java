@@ -62,7 +62,7 @@ public class MyProfileActivity extends AppCompatActivity {
         list = new ArrayList<MyTicket>();
 
         reference = FirebaseDatabase.getInstance().getReference().child("Users").child(username_key_new);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 nama_lengkap.setText(dataSnapshot.child("nama_lengkap").getValue().toString());
