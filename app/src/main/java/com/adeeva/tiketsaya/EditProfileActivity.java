@@ -101,6 +101,10 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // ubah state menjadi loading
+                btn_save.setEnabled(false);
+                btn_save.setText("Loading ...");
+
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
