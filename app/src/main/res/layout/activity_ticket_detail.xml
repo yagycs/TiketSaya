@@ -121,9 +121,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tripod everywhere"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/mlight"
+                    android:text="Tripod everywhere"
                     android:textColor="@color/grayPrimary"
                     android:textSize="12sp" />
 
@@ -161,8 +161,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Connect for any tourist"
                     android:fontFamily="@font/mlight"
+                    android:text="Connect for any tourist"
                     android:textColor="@color/grayPrimary"
                     android:textSize="12sp" />
 
@@ -200,8 +200,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Dance and Foods"
                     android:fontFamily="@font/mlight"
+                    android:text="Dance and Foods"
                     android:textColor="@color/grayPrimary"
                     android:textSize="12sp" />
 
@@ -265,13 +265,8 @@
 
             <Button
                 android:id="@+id/btn_buy_ticket"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/bg_btn_blue_primary"
-                android:fontFamily="@font/mmedium"
-                android:text="BUY TICKET"
-                android:textColor="#FFF"
-                android:textSize="20sp" />
+                style="@style/btn_blue_primary"
+                android:text="BUY TICKET" />
 
 
         </LinearLayout>

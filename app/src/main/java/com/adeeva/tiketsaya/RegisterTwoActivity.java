@@ -68,14 +68,6 @@ public class RegisterTwoActivity extends AppCompatActivity {
             }
         });
 
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent backtoprev = new Intent(RegisterTwoActivity.this, RegisterOneActivity.class);
-                startActivity(backtoprev);
-            }
-        });
-
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,6 +146,16 @@ public class RegisterTwoActivity extends AppCompatActivity {
 
             }
         });
+
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+
     }
 
     String getFileExtension(Uri uri) {

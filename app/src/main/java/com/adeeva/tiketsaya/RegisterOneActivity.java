@@ -23,7 +23,7 @@ public class RegisterOneActivity extends AppCompatActivity {
     LinearLayout btn_back;
     Button btn_continue;
     EditText username, password, email_address;
-    DatabaseReference reference;
+    DatabaseReference reference, reference_username;
 
     String USERNAME_KEY = "usernamekey";
     String username_key = "";
@@ -40,14 +40,6 @@ public class RegisterOneActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         email_address = findViewById(R.id.email_address);
 
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent backtosignin = new Intent(RegisterOneActivity.this, SignInActivity.class);
-                startActivity(backtosignin);
-            }
-        });
-
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,55 +48,91 @@ public class RegisterOneActivity extends AppCompatActivity {
                 btn_continue.setEnabled(false);
                 btn_continue.setText("Loading ...");
 
-                if (username.getText().toString().isEmpty()) {
-                    btn_continue.setEnabled(true);
-                    btn_continue.setText(R.string.continue_label);
-                    Toast.makeText(getApplicationContext(), "Username kosong!", Toast.LENGTH_SHORT).show();
+                // mengambil username dari Firebase database
+                reference_username = FirebaseDatabase.getInstance().getReference()
+                        .child("Users").child(username.getText().toString());
 
-                } else {
+                reference_username.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        // jika username tersedia
+                        if (dataSnapshot.exists()) {
+                            Toast.makeText(getApplicationContext(), "Username sudah tersedia", Toast.LENGTH_SHORT).show();
 
-                    if (password.getText().toString().isEmpty()) {
-                        btn_continue.setEnabled(true);
-                        btn_continue.setText(R.string.continue_label);
-                        Toast.makeText(getApplicationContext(), "Password kosong!", Toast.LENGTH_SHORT).show();
+                            // ubah state menjadi aktif
+                            btn_continue.setEnabled(true);
+                            btn_continue.setText("CONTINUE");
 
-                    } else if (email_address.getText().toString().isEmpty()) {
-                        btn_continue.setEnabled(true);
-                        btn_continue.setText(R.string.continue_label);
-                        Toast.makeText(getApplicationContext(), "Email kosong!", Toast.LENGTH_SHORT).show();
 
-                    } else {
-                        // menyimpan data kepada local storage
-                        SharedPreferences sharedPreferences = getSharedPreferences(USERNAME_KEY, MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(username_key, username.getText().toString());
-                        editor.apply();
+                        }
 
-                        //simpan kepada database
-                        reference = FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(username.getText().toString());
-                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                dataSnapshot.getRef().child("username").setValue(username.getText().toString());
-                                dataSnapshot.getRef().child("password").setValue(password.getText().toString());
-                                dataSnapshot.getRef().child("email_address").setValue(email_address.getText().toString());
-                                dataSnapshot.getRef().child("user_balance").setValue(800);
+                        else if (username.getText().toString().isEmpty()) {
+                            btn_continue.setEnabled(true);
+                            btn_continue.setText(R.string.continue_label);
+                            Toast.makeText(getApplicationContext(), "Username kosong!", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        else {
+
+                             if (password.getText().toString().isEmpty()) {
+                                btn_continue.setEnabled(true);
+                                btn_continue.setText(R.string.continue_label);
+                                Toast.makeText(getApplicationContext(), "Password kosong!", Toast.LENGTH_SHORT).show();
+
+                            } else if (email_address.getText().toString().isEmpty()) {
+                                btn_continue.setEnabled(true);
+                                btn_continue.setText(R.string.continue_label);
+                                Toast.makeText(getApplicationContext(), "Email kosong!", Toast.LENGTH_SHORT).show();
+
+
+                            } else {
+
+                                // menyimpan data kepada local storage
+                                SharedPreferences sharedPreferences = getSharedPreferences(USERNAME_KEY, MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString(username_key, username.getText().toString());
+                                editor.apply();
+
+                                //simpan kepada database
+                                reference = FirebaseDatabase.getInstance().getReference()
+                                        .child("Users").child(username.getText().toString());
+                                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        dataSnapshot.getRef().child("username").setValue(username.getText().toString());
+                                        dataSnapshot.getRef().child("password").setValue(password.getText().toString());
+                                        dataSnapshot.getRef().child("email_address").setValue(email_address.getText().toString());
+                                        dataSnapshot.getRef().child("user_balance").setValue(800);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                                Intent gotonextregister = new Intent(RegisterOneActivity.this, RegisterTwoActivity.class);
+                                startActivity(gotonextregister);
+
                             }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
-                        Intent gotonextregister = new Intent(RegisterOneActivity.this, RegisterTwoActivity.class);
-                        startActivity(gotonextregister);
-
+                        }
                     }
 
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                    }
+                });
+
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }
