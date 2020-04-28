@@ -149,6 +149,13 @@ public class EditProfileActivity extends AppCompatActivity {
                                             Log.d("url", url);
 
                                         }
+                                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Uri> task) {
+                                            // pindah activity
+                                            Intent gotobackprofile = new Intent(EditProfileActivity.this, MyProfileActivity.class);
+                                            startActivity(gotobackprofile);
+                                        }
                                     });
                                 }
                             }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -161,8 +168,8 @@ public class EditProfileActivity extends AppCompatActivity {
                     });
                 }
 
-                Intent gotobackprofile = new Intent(EditProfileActivity.this, MyProfileActivity.class);
-                startActivity(gotobackprofile);
+                //Intent gotobackprofile = new Intent(EditProfileActivity.this, MyProfileActivity.class);
+                //startActivity(gotobackprofile);
 
             }
         });

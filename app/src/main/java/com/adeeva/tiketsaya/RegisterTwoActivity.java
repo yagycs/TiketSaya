@@ -136,6 +136,11 @@ public class RegisterTwoActivity extends AppCompatActivity {
                                     Intent gotosuccess = new Intent(RegisterTwoActivity.this, SuccessRegisterActivity.class);
                                     startActivity(gotosuccess);
                                 }
+                            }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                                }
                             });
                         }
 
